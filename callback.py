@@ -1,5 +1,3 @@
-
-# A very simple Bottle Hello World app for you to get started with...
 from bottle import default_app, route
 #from bottle import static_file
 #from bottle import response
@@ -9,9 +7,10 @@ from bottle import default_app, route
 
 
 @route('/services')
+@route('/services/')
 def hello_world():
-    return 'Hello from Bottle!'
-
-application = default_app()
+    return 'Hello from Bottle services!'
 
 
+
+bottle_app = default_app()

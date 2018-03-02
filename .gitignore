@@ -1,6 +1,8 @@
 # custom entries
 api_keys.py
 tokens.py
+_main*.py
+_app*.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
