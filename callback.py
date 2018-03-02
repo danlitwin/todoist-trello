@@ -12,5 +12,4 @@ def hello_world():
     return 'Hello from Bottle services!'
 
 
-
 bottle_app = default_app()
