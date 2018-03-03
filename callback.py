@@ -8,6 +8,6 @@ from bottle import default_app, route
 @route('/services')
 @route('/services/')
 def hello_world():
-    return 'Hello from Bottle service!'
+    return 'Hello from Bottle service, version 2!'
 
 bottle_app = default_app()
