@@ -5,11 +5,9 @@ from bottle import default_app, route
 #from bottle import error, abort, redirect
 #from bottle import template
 
-
 @route('/services')
 @route('/services/')
 def hello_world():
-    return 'Hello from Bottle services!'
-
+    return 'Hello from Bottle service!'
 
 bottle_app = default_app()
