@@ -1,8 +1,8 @@
 import requests
-import pickle
+# import pickle
 from todoist.api    import TodoistAPI
 from trello         import TrelloClient
-import api_keys
+from _app_keys      import API_KEYS
 
 td_projects_to_sync = ['Home']
 
@@ -14,7 +14,6 @@ def main():
 # class TodoistTrelloSync
 
 
-
 def todoist_test():
     td = TodoistAPI(api_keys['todoist']['key'])
     td.sync()
@@ -24,16 +23,20 @@ def todoist_test():
     # plist = [[p['name'], p['item_order'], p['indent'], p['id']] for p in td['projects']]
 
 
+def trello_request(method='POST', endpoint='', **kwargs):
+    url = 'https://api.trello.com/1/' + endpoint.strip(chars='/') + '/'
+    if 'query' in kwargs.keys():
+        kwargs['query'].update(API_KEYS.trello.dict)
+    else:
+        kwargs['query'] = API_KEYS.trello.dict
+    response = requests.request(method, url, **kwargs)
+    return response
+
+
 def trello_test():
-    tr = TrelloClient(
-        api_key =       api_keys['trello']['key'],
-        token =         api_keys['trello']['token']
-    )
-    all_boards = tr.list_boards()
-    url = 'https://api.trello.com/1/members/me/boards'
     response = requests.request('GET', url, params=api_keys['trello'])
     print(response.text)
 
-#===============================================================================
-if __name__=='__main__':
+# ==============================================================================
+if __name__ == '__main__':
     main()
