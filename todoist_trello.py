@@ -2,7 +2,6 @@ import requests
 # import pickle
 from todoist.api    import TodoistAPI
 from trello         import TrelloClient
-from _app_keys      import API_KEYS
 
 td_projects_to_sync = ['Home']
 
@@ -15,8 +14,10 @@ def main():
 
 
 def todoist_test():
-    td = TodoistAPI(api_keys['todoist']['key'])
-    td.sync()
+    url = lambda t: 'https://beta.todoist.com/API/v8/{}'.format(t)
+    requests.get('https://beta.todoist.com/API/v8/projects', headers={'Authorization': 'Bearer {}}'.format()}).json()
+    #td = TodoistAPI(api_keys['todoist']['key'])
+    #td.sync()
     # for project in td.projects:
     #     if sync_td_projects.count(project.name) = 0:
     #         ':'.join('Home:Office:Molding'.split(':')[:-1])
