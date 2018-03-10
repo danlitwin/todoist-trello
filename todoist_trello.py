@@ -25,7 +25,7 @@ def todoist_test():
 
 
 def td_rest(endpoint='', method='POST', **kwargs):
-    url = 'https://beta.todoist.com/API/v8/' + endpoint.strip(chars='/') + '/'
+    url = 'https://beta.todoist.com/API/v8/' + endpoint.strip('/') + '/'
     kwargs.setdefault('headers', {}).update({
         'Authorization': 'Bearer {}'.format(keybox.todoist.key)
         # , 'Content-Type':  'application/json'
@@ -36,7 +36,7 @@ def td_rest(endpoint='', method='POST', **kwargs):
 
 
 def trello_request(method='POST', endpoint='', **kwargs):
-    url = 'https://api.trello.com/1/' + endpoint.strip(chars='/') + '/'
+    url = 'https://api.trello.com/1/' + endpoint.strip('/') + '/'
     kwargs.setdefault('query', {}).update(keybox.trello.dict)
     response = requests.request(method, url, **kwargs)
     return response
