@@ -4,10 +4,7 @@ from bottle import default_app, route, request, abort
 # from bottle import request, get, post
 # from bottle import error, abort, redirect
 # from bottle import template
-from box import SBox
-
-from _app_keys import api_keys
-API = SBox(api_keys, frozen_box=True, box_it_up=True)
+from keybox import keybox
 
 
 @route('/services')
@@ -19,7 +16,7 @@ def hello_world():
 def check_auth(req=None, abort_if_false=True):
     if req is None:
         req = request
-    auth_valid = req.headers.get('Authorization') == API.master.token
+    auth_valid = req.headers.get('Authorization') == keybox.master.token
     if not auth_valid and abort_if_false:
         abort(401, 'Invalid authorization')
     return auth_valid
