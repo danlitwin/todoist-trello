@@ -5,14 +5,6 @@ from keybox import keybox
 # from todoist.api    import TodoistAPI
 # from trello         import TrelloClient
 
-cache_tasks = []
-
-def main():
-    todoist_test()
-
-
-# class TodoistTrelloSync
-
 
 def td_get_labels():
     labels = td_rest(endpoint='labels', method='GET').json()
@@ -49,10 +41,6 @@ def trello_request(method='POST', endpoint='', **kwargs):
     return response
 
 
-# def trello_test():
-    # response = requests.request('GET', url, params=api_keys['trello'])
-    # print(response.text)
-
 # ==============================================================================
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
