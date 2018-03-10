@@ -5,6 +5,7 @@ from keybox import keybox
 # from todoist.api    import TodoistAPI
 # from trello         import TrelloClient
 
+cache_tasks = []
 
 def main():
     todoist_test()
@@ -13,15 +14,21 @@ def main():
 # class TodoistTrelloSync
 
 
-def todoist_test():
-    return td_rest(endpoint='labels', method='GET').json()
-    # td = TodoistAPI(api_keys['todoist']['key'])
-    # td.sync()
-    # for project in td.projects:
-    #     if sync_td_projects.count(project.name) = 0:
-    #         ':'.join('Home:Office:Molding'.split(':')[:-1])
-    # plist = [[p['name'], p['item_order'], p['indent'],
-    #     p['id']] for p in td['projects']]
+def td_get_labels():
+    labels = td_rest(endpoint='labels', method='GET').json()
+    return {k['name']: k['id'] for k in labels}
+
+
+def td_get_tasks(project=None, label=None):
+    params = {'project_id': project, 'label_id': label}
+    tasks = td_rest(endpoint='tasks', method='GET', params=params)
+    return tasks.json()
+
+
+def td_find_task(name, prefix=True, cache_tasks=None):
+    tasks = cache_tasks or td_get_tasks()
+    matches = [i['id'] for i in tasks if i['content'].startswith(name)]
+    return matches[0]
 
 
 def td_rest(endpoint='', method='POST', **kwargs):
