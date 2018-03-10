@@ -25,11 +25,7 @@ def todoist_test():
 
 
 def td_rest(endpoint='', method='POST', **kwargs):
-<<<<<<< HEAD
     url = 'https://beta.todoist.com/API/v8/' + endpoint.strip('/')
-=======
-    url = 'https://beta.todoist.com/API/v8/' + endpoint.strip('/') + '/'
->>>>>>> e1954760a1aeb7a42183d258a5ff5f3274f17291
     kwargs.setdefault('headers', {}).update({
         'Authorization': 'Bearer {}'.format(keybox.todoist.key)
         # , 'Content-Type':  'application/json'
