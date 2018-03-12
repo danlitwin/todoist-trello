@@ -1,5 +1,6 @@
 import requests
 import uuid
+import re
 # import json
 from keybox import keybox
 # from todoist.api    import TodoistAPI
@@ -8,7 +9,7 @@ from keybox import keybox
 # class TodoistREST():
 
 
-def td_get_labels():
+def td_get_label_ids():
     labels = td_request(endpoint='labels', method='GET').json()
     return {k['name']: k['id'] for k in labels}
 
@@ -19,13 +20,16 @@ def td_get_tasks(project=None, label=None):
     return tasks.json()
 
 
-def td_find_task(name, prefix=True, cache_tasks=None):
+def td_find_task(name, prefix=True, all_matches=False, cache_tasks=None):
     tasks = cache_tasks or td_get_tasks()
-    matches = [i['id'] for i in tasks if i['content'].startswith(name)]
-    return matches[0]
+    matches = [i['id'] for i in tasks if 
+              (i['content'].startswith(name) if prefix else i['content']==name)]
+    if all_matches or len(matches) > 1:
+        return matches
+    return matches[0] if len(matches) > 0 else None
 
 
-def td_request(endpoint='', method='POST', **kwargs):
+def td_request(endpoint='', method='POST', **kwargs={}):
     url = 'https://beta.todoist.com/API/v8/' + endpoint.strip('/')
     kwargs.setdefault('headers', {}).update({
         'Authorization': 'Bearer {}'.format(keybox.todoist.key)
