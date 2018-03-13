@@ -38,7 +38,8 @@ def td_request(endpoint='', method='POST', **kwargs):
     }.update({
         'Content-Type':  'application/json',
         'X-Request-Id':  str(uuid.uuid4())
-    } if method == 'POST' or 'data' in kwargs or 'json' in kwargs else {})
+    } if method == 'POST' else {})
+    #  or 'data' in kwargs or 'json' in kwargs else {})
     kwargs.setdefault('headers', {}).update(newheaders)
     # if 'data' in kwargs and isinstance(kwargs['data'], dict):
     #     kwargs['data'] = json.dumps(kwargs['data'])
