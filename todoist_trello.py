@@ -32,12 +32,13 @@ def td_find_task(name, prefix=True, all_matches=False, cache_tasks=None):
 
 def td_request(endpoint='', method='POST', **kwargs):
     url = 'https://beta.todoist.com/API/v8/' + endpoint.strip('/')
-    kwargs = kwargs or {}
-    newheaders = {'Authorization': 'Bearer {}'.format(keybox.todoist.key)}
-    if method == 'POST':
-        newheaders['Content-Type']:  'application/json'
-        newheaders['X-Request-Id']:  str(uuid.uuid4())}
-    #  or 'data' in kwargs or 'json' in kwargs else {})
+    kwargs = kwargs or {'headers': {}}
+    newheaders = {
+        'Authorization': 'Bearer {}'.format(keybox.todoist.key)
+    }.update({
+        'Content-Type':  'application/json',
+        'X-Request-Id':  str(uuid.uuid4())
+    } if method == 'POST' or 'data' in kwargs or 'json' in kwargs else {})
     kwargs.setdefault('headers', {}).update(newheaders)
     # if 'data' in kwargs and isinstance(kwargs['data'], dict):
     #     kwargs['data'] = json.dumps(kwargs['data'])
