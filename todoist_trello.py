@@ -29,14 +29,15 @@ def td_find_task(name, prefix=True, all_matches=False, cache_tasks=None):
     return matches[0] if len(matches) > 0 else None
 
 
-def td_request(endpoint='', method='POST', **kwargs={}):
+def td_request(endpoint='', method='POST', **kwargs):
     url = 'https://beta.todoist.com/API/v8/' + endpoint.strip('/')
-    kwargs.setdefault('headers', {}).update({
+    newheaders = {
         'Authorization': 'Bearer {}'.format(keybox.todoist.key)
-    }).update({
+    }.update({
         'Content-Type':  'application/json',
         'X-Request-Id':  str(uuid.uuid4())
     } if method == 'POST' or 'data' in kwargs or 'json' in kwargs else {})
+    kwargs.setdefault('headers', {}).update(newheaders)
     return requests.request(method, url, **kwargs)
 
 
