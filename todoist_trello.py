@@ -2,9 +2,10 @@ import requests
 import uuid
 # import re
 # import json
-from keybox import keybox
+
 # from todoist.api    import TodoistAPI
 # from trello         import TrelloClient
+from keybox import keybox
 
 # class TodoistREST():
 
