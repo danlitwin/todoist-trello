@@ -2,12 +2,15 @@ import requests
 import uuid
 # import re
 # import json
-
 # from todoist.api    import TodoistAPI
 # from trello         import TrelloClient
 from keybox import keybox
 
 # class TodoistREST():
+
+
+def main():
+    print(td_request('labels','GET'))
 
 
 def td_get_label_ids():
@@ -32,14 +35,13 @@ def td_find_task(name, prefix=True, all_matches=False, cache_tasks=None):
 
 def td_request(endpoint='', method='POST', **kwargs):
     url = 'https://beta.todoist.com/API/v8/' + endpoint.strip('/')
-    kwargs = kwargs or {'headers': {}}
-    newheaders = {
-        'Authorization': 'Bearer {}'.format(keybox.todoist.key)
-    }.update({
-        'Content-Type':  'application/json',
-        'X-Request-Id':  str(uuid.uuid4())
-    } if method == 'POST' or 'data' in kwargs or 'json' in kwargs else {})
-    kwargs.setdefault('headers', {}).update(newheaders)
+    print(type(kwargs))
+    newheaders = kwargs['headers'] if kwargs and 'headers' in kwargs else {}
+    newheaders['Authorization'] = 'Bearer {}'.format(keybox.todoist.key)
+    if method.upper() == 'POST' or 'data' in kwargs or 'json' in kwargs:
+        newheaders['Content-Type'] = 'application/json'
+        newheaders['X-Request-Id'] = str(uuid.uuid4())
+    kwargs['headers'] = newheaders
     # if 'data' in kwargs and isinstance(kwargs['data'], dict):
     #     kwargs['data'] = json.dumps(kwargs['data'])
     return requests.request(method, url, **kwargs)
@@ -52,5 +54,5 @@ def trello_request(method='POST', endpoint='', **kwargs):
 
 
 # ==============================================================================
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
