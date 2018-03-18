@@ -10,6 +10,7 @@ name = "pypi"
 requests = "*"
 python-box = "*"
 bottle = "*"
+todoist-python = "*"
 
 
 [dev-packages]

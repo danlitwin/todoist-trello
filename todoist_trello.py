@@ -10,7 +10,8 @@ from keybox import keybox
 
 
 def main():
-    print(td_request('labels','GET'))
+    r = td_request('labels','GET')
+    print(r.content)
 
 
 def td_get_label_ids():
@@ -35,7 +36,6 @@ def td_find_task(name, prefix=True, all_matches=False, cache_tasks=None):
 
 def td_request(endpoint='', method='POST', **kwargs):
     url = 'https://beta.todoist.com/API/v8/' + endpoint.strip('/')
-    print(type(kwargs))
     newheaders = kwargs['headers'] if kwargs and 'headers' in kwargs else {}
     newheaders['Authorization'] = 'Bearer {}'.format(keybox.todoist.key)
     if method.upper() == 'POST' or 'data' in kwargs or 'json' in kwargs:
