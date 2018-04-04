@@ -25,35 +25,32 @@ def td_get_task(name, create_if_not_found=True, **new_params):
 def td_add_task(name, **kwargs):
     params = kwargs or {}
     params['content'] = name
-    return td_request('tasks', 'POST', data=kwargs)
+    return td_request('tasks', 'POST', **params)
 
 
-def td_get_task(name, prefix=True, all_matches=False, cache_tasks=None):
-    if isinstance(name, int):
-        # option 1:  get task by id
-        if cache_tasks:
-            return next((i for i in cache_tasks if i['id'] == name), None)
-        else:
-            task = td_request('tasks/{}'.format(name), 'GET')
-    else:
-        # option 2:  get task by name
-        tasks = cache_tasks or td_get_all_tasks()
-        matches = [i for i in tasks if
-                   (i['content'].startswith(name)
-                    if prefix else i['content'] == name)]
-        if all_matches and len(matches) > 1:
-            return matches
-        return matches[0] if matches else None
+def td_find_task_by_id(taskid, cache_tasks=None):
+    if not isinstance(taskid, int):
+        raise TypeError
+    if cache_tasks:
+        return next((i for i in cache_tasks if i['id'] == taskid), None)
+    return td_request('tasks/{}'.format(taskid), 'GET')
+
+
+def td_find_task_by_name(name, prefix=True, all_matches=False, cache_tasks=None):
+    tasks = cache_tasks or td_get_all_tasks()
+    is_match = lambda d: d.startswith(name) if prefix else d == name
+    matches = [i for i in tasks if is_match(i['content'])]
+    if all_matches and len(matches) > 1:
+        return matches
+    return matches[0] if matches else None
 
 
 def td_get_all_tasks(project=None, label=None):
-    params = {'project_id': project, 'label_id': label}
-    tasks = td_request('tasks', 'GET', params=params)
-    return tasks.json()
+    tasks = td_request('tasks', 'GET', project_id=project, label_id=label)
 
 
 def td_get_label_ids():
-    labels = td_request(endpoint='labels', method='GET').json()
+    labels = td_request('labels', 'GET')
     return {k['name']: k['id'] for k in labels}
 
 
@@ -88,6 +85,7 @@ def td_request(endpoint='', method='post', **kwargs):
     #
     # ============================================================================
     url = 'https://beta.todoist.com/API/v8/' + endpoint.strip('/')
+    kwargs = {k:v for k,v in kwargs.items() if v is not None}
     if method.lower() == 'get':
         response = requests.get(url, params=kwargs, headers=td_headers(method))
     else:  # elif method.lower() == 'post':
