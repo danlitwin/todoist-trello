@@ -24,8 +24,7 @@ def bt_init(email='', password=''):
             "DeviceUUID": bt_deviceuuid},
         "EmailAddress": email,
         "Password": password
-    }'
-    #.format(, 'danlitwin+babytracker@gmail.com','DhJsRiJaLa51%'
+    }
   
 def td_headers(method='post'):
     headers = {'Authorization': 'Bearer {}'.format(keybox.todoist.key)}
